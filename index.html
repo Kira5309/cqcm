@@ -275,7 +275,7 @@ function jumpToPage() {
 
      async function loadUsers() {
             try {
-                const response = await fetch('https://christoph75351.github.io/cs/users.json');
+                const response = await fetch('https://raw.githubusercontent.com/Kira5309/cqcm/main/videos.json');
                 if (!response.ok) throw new Error('Failed to load users');
                 users = await response.json();
                 console.log("用户数据：", users);
