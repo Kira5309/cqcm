@@ -78,6 +78,7 @@
 
     <script>
         let videos = [];
+        let users = [];
         let currentPage = 1;
         const videosPerPage = 20;
         let hls = null; // 存储 HLS 实例
@@ -85,7 +86,7 @@
 
         async function loadVideos() {
             try {
-                const response = await fetch('https://raw.githubusercontent.com/Kira5309/cqcm/main/videos.json');
+                const response = await fetch('https://Kira5309.github.io/cqcm/videos.json');
                 if (!response.ok) throw new Error('Failed to load JSON');
                 
                 videos = await response.json();
