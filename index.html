@@ -161,23 +161,34 @@ async function loadVideos() {
       });
     }
 
-    function renderVideos() {
-      const container = document.getElementById("video-container");
-      let filtered = currentCategory === "all" ? videos : videos.filter(v => v.type_name === currentCategory);
-      const start = (currentPage - 1) * videosPerPage;
-      const end = start + videosPerPage;
-      const pageVideos = filtered.slice(start, end);
-      container.innerHTML = '';
-      pageVideos.forEach(v => {
-        const div = document.createElement("div");
-        div.className = "bg-white p-2 shadow rounded hover:shadow-lg transition cursor-pointer";
-        div.innerHTML = `<img src="${v.vod_pic}" class="w-full rounded mb-2"/><div class="text-sm">${v.vod_name}</div>`;
-        div.onclick = () => openVideoModal(v.vod_play_url);
-        container.appendChild(div);
-      });
-      document.getElementById("currentPage").textContent = currentPage;
-      document.getElementById("totalPage").textContent = Math.ceil(filtered.length / videosPerPage);
-    }
+function renderVideos() {
+  const container = document.getElementById("video-container");
+  let filtered = currentCategory === "all" ? videos : videos.filter(v => v.type_name === currentCategory);
+  const start = (currentPage - 1) * videosPerPage;
+  const end = start + videosPerPage;
+  const pageVideos = filtered.slice(start, end);
+  container.innerHTML = '';
+  pageVideos.forEach(v => {
+    const div = document.createElement("div");
+    div.className = "bg-white p-2 shadow rounded hover:shadow-lg transition cursor-pointer";
+    div.innerHTML = `<img src="${v.vod_pic}" class="w-full rounded mb-2"/><div class="text-sm">${v.vod_name}</div>`;
+    
+    // 修改后的点击行为：打开解析接口新窗口
+    div.onclick = () => {
+      if (!isLoggedIn) {
+        openLoginModal();
+        return;
+      }
+      const parsedUrl = `https://sljxsl.com/?url=${encodeURIComponent(v.vod_play_url)}`;
+      window.open(parsedUrl, '_blank');
+    };
+
+    container.appendChild(div);
+  });
+  document.getElementById("currentPage").textContent = currentPage;
+  document.getElementById("totalPage").textContent = Math.ceil(filtered.length / videosPerPage);
+}
+
 
 function openVideoModal(url) {
   if (!isLoggedIn) {
